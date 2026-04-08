@@ -40,9 +40,9 @@ TOPIC_HANDLERS = {
 
     #--------------------------------------------------------------------------------------------
 
-    "FOSTEC_AC201_data": {"group":"aircoms","pressure_line":"6.5","factory":"2"},
-    "FOSTEC_AC202_data":  {"group":"aircoms","pressure_line":"6.5","factory":"2"},
-    "FOSTEC_STB202_data": {"group":"aircoms","pressure_line":"6.5","factory":"2"},
+    "FOSTEC_AC201_data": {"group":"aircom","pressure_line":"6.5","factory":"2"},
+    "FOSTEC_AC202_data":  {"group":"aircom","pressure_line":"6.5","factory":"2"},
+    "FOSTEC_STB202_data": {"group":"aircom","pressure_line":"6.5","factory":"2"},
 
     "FOSTEC_PowerAC-201_data": {"group":"power","pressure_line":"6.5","factory":"2"},
     "FOSTEC_PowerAC-202_data": {"group":"power","pressure_line":"6.5","factory":"2"},
@@ -54,15 +54,15 @@ TOPIC_HANDLERS = {
 
     #--------------------------------------------------------------------------------------------
 
-    "FOSTEC_AC301_data": {"group":"aircoms","pressure_line":"5.5","factory":"3"},
-    "FOSTEC_AC302_data":  {"group":"aircoms","pressure_line":"5.5","factory":"3"},
-    "FOSTEC_AC303_data": {"group":"aircoms","pressure_line":"5.5","factory":"3"},
-    "FOSTEC_STB301_data": {"group":"aircoms","pressure_line":"5.5","factory":"3"},
+    "FOSTEC_AC301_data": {"group":"aircom","pressure_line":"5.5","factory":"3"},
+    "FOSTEC_AC302_data":  {"group":"aircom","pressure_line":"5.5","factory":"3"},
+    "FOSTEC_AC303_data": {"group":"aircom","pressure_line":"5.5","factory":"3"},
+    "FOSTEC_STB301_data": {"group":"aircom","pressure_line":"5.5","factory":"3"},
 
-    "FOSTEC_AC304_data": {"group":"aircoms","pressure_line":"6.5","factory":"3"},
-    "FOSTEC_AC302_data": {"group":"aircoms","pressure_line":"6.5","factory":"3"},
-    "FOSTEC_AC303_data": {"group":"aircoms","pressure_line":"6.5","factory":"3"},
-    "FOSTEC_STB302_data": {"group":"aircoms","pressure_line":"6.5","factory":"3"},
+    "FOSTEC_AC304_data": {"group":"aircom","pressure_line":"6.5","factory":"3"},
+    "FOSTEC_AC302_data": {"group":"aircom","pressure_line":"6.5","factory":"3"},
+    "FOSTEC_AC303_data": {"group":"aircom","pressure_line":"6.5","factory":"3"},
+    "FOSTEC_STB302_data": {"group":"aircom","pressure_line":"6.5","factory":"3"},
 
     "FOSTEC_PowerAC-301_data": {"group":"power","pressure_line":"5.5","factory":"3"},
     "FOSTEC_PowerAC-302_data": {"group":"power","pressure_line":"5.5","factory":"3"},
