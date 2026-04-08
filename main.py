@@ -12,7 +12,7 @@ PORT = 443
 USER = "mqttsnk"
 PW = "fostec-snk"
 
-MONGO_URI = "mongodb://localhost:27017/"
+MONGO_URI = "mongodb://192.168.100.198:27017/"
 DB_NAME = "SNK-MQTT"
 
 # ================= TOPIC MAP =================
