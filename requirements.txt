@@ -1,5 +1,5 @@
-paho-mqtt
-websockets
-pymongo
-motor
-
+paho-mqtt==2.1.0
+websockets==16.0
+pymongo==4.16.0
+motor==3.7.1
+pandas==3.0.2

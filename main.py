@@ -5,6 +5,47 @@ import ssl
 from pymongo import MongoClient
 import paho.mqtt.client as mqtt
 from datetime import datetime, timezone
+import math
+
+def is_valid_data(data):
+    """
+    เช็คว่าข้อมูลที่ได้รับมาเป็นข้อมูลจริง (Valid) หรือเป็นขยะ (Bad Data)
+    คืนค่า True ถ้าข้อมูลโอเค, คืนค่า False ถ้าเป็นขยะ (0.0 ทั้งแถว)
+    """
+    # 1. ดักจับกรณี status เป็น 0 (ตัวเลข) ที่จะทำให้หน้าบ้าน .includes() พัง
+    # ถ้า statusAC1 มาเป็นเลข 0.0 ให้ตีเป็นขยะทันที
+    if data.get("statusAC1") == 0 or data.get("statusAC1") == 0.0:
+        return False
+        
+    # 2. เช็คค่ากระแสหรือความดัน (ถ้าเป็น 0 หมดพร้อมกัน แสดงว่า Sensor ไม่อ่าน)
+    # เราเลือกเช็ค Current หรือ Pressure เป็นหลัก
+    check_fields = ["currentAC1", "currentAC2", "presAC1", "presAC2"]
+    values = [data.get(f, 0) for f in check_fields]
+    
+    # ถ้าค่าในลิสต์ทั้งหมดเป็น 0 (หรือ NaN) แสดงว่าเป็นข้อมูลขยะ
+    if all(v == 0 or (isinstance(v, float) and math.isnan(v)) for v in values):
+        return False
+        
+    return True
+
+def clean_nan(obj):
+    """ฟังก์ชันทำความสะอาดข้อมูล: เปลี่ยน NaN เป็น 0.0 และกรองแถวเสีย"""
+    if isinstance(obj, list):
+        # กรองเอาเฉพาะไอเทมที่ 'ไม่ใช่ขยะ' และคลีน NaN ภายในด้วย
+        return [clean_nan(i) for i in obj if not (isinstance(i, dict) and not is_valid_data(i))]
+    
+    elif isinstance(obj, dict):
+        # ถ้าตัว dict เองเป็นข้อมูลเสีย ให้คืนค่า None (เดี๋ยว list comprehension ด้านบนจะจัดการออกเอง)
+        if not is_valid_data(obj):
+            return None 
+            
+        return {k: clean_nan(v) for k, v in obj.items()}
+    
+    elif isinstance(obj, float):
+        if math.isnan(obj) or math.isinf(obj):
+            return 0.0
+            
+    return obj
 
 # ================= CONFIG =================
 BROKER = "snkmqttws.fostec-energy.net"
@@ -13,6 +54,7 @@ USER = "mqttsnk"
 PW = "fostec-snk"
 
 MONGO_URI = "mongodb://192.168.100.198:27017/"
+# MONGO_URI = "mongodb://localhost:27017/"
 DB_NAME = "SNK-MQTT"
 
 # ================= TOPIC MAP =================
@@ -87,6 +129,12 @@ def mqtt_process(queue):
 
             data = json.loads(payload)
 
+            # data = clean_nan(data)
+
+            # if data is None:
+            #     print(" Data Error ")
+            #     return
+
             # 🔥 inject metadata
             data["timestamp"] = datetime.now(timezone.utc)
             data["type"] = meta["type"]
@@ -127,7 +175,8 @@ def db_worker(queue):
         try:
             data = queue.get(timeout=1)
 
-            col_name = f"{data['type']}_{data['line']}"
+            # col_name = f"{data['type']}_{data['line']}" ถ้าต้องการแยกแบบ aircom5_5
+            col_name = f"{data['type']}" #แบบนี้เก็บแค่ aircom
             buffers.setdefault(col_name, []).append(data)
 
         except:
